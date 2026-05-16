@@ -1,0 +1,141 @@
+<div class="tab {{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+    <p class="notes">Berry plant settings for this tile.</p>
+    <div class="form-group">
+      <label>{{localize "POKEBERRY.Enabled"}}</label>
+      <div class="form-fields">
+        <input type="checkbox" name="flags.pokeberry.enabled" {{#if berry.enabled}}checked{{/if}}>
+      </div>
+      <p class="hint">{{localize "POKEBERRY.EnabledHint"}}</p>
+    </div>
+    {{#if berry.enabled}}
+    <div class="form-group">
+      <label>{{localize "POKEBERRY.BerryType"}}</label>
+      <div class="form-fields">
+        <select name="flags.pokeberry.berryType">
+          <optgroup label="{{localize "POKEBERRY.GroupBerries"}}">
+            <option value="aguav" {{#if (eq berry.berryType "aguav")}}selected{{/if}}>{{localize "POKEBERRY.Aguav"}} (T2)</option>
+            <option value="apicot" {{#if (eq berry.berryType "apicot")}}selected{{/if}}>{{localize "POKEBERRY.Apicot"}} (T2)</option>
+            <option value="aspear" {{#if (eq berry.berryType "aspear")}}selected{{/if}}>{{localize "POKEBERRY.Aspear"}} (T1)</option>
+            <option value="babiri" {{#if (eq berry.berryType "babiri")}}selected{{/if}}>{{localize "POKEBERRY.Babiri"}} (T4)</option>
+            <option value="belue" {{#if (eq berry.berryType "belue")}}selected{{/if}}>{{localize "POKEBERRY.Belue"}} (T2)</option>
+            <option value="bluk" {{#if (eq berry.berryType "bluk")}}selected{{/if}}>{{localize "POKEBERRY.Bluk"}} (T0)</option>
+            <option value="charti" {{#if (eq berry.berryType "charti")}}selected{{/if}}>{{localize "POKEBERRY.Charti"}} (T4)</option>
+            <option value="cheri" {{#if (eq berry.berryType "cheri")}}selected{{/if}}>{{localize "POKEBERRY.Cheri"}} (T1)</option>
+            <option value="chesto" {{#if (eq berry.berryType "chesto")}}selected{{/if}}>{{localize "POKEBERRY.Chesto"}} (T1)</option>
+            <option value="chilan" {{#if (eq berry.berryType "chilan")}}selected{{/if}}>{{localize "POKEBERRY.Chilan"}} (T4)</option>
+            <option value="chople" {{#if (eq berry.berryType "chople")}}selected{{/if}}>{{localize "POKEBERRY.Chople"}} (T4)</option>
+            <option value="coba" {{#if (eq berry.berryType "coba")}}selected{{/if}}>{{localize "POKEBERRY.Coba"}} (T4)</option>
+            <option value="colbur" {{#if (eq berry.berryType "colbur")}}selected{{/if}}>{{localize "POKEBERRY.Colbur"}} (T4)</option>
+            <option value="cornn" {{#if (eq berry.berryType "cornn")}}selected{{/if}}>{{localize "POKEBERRY.Cornn"}} (T2)</option>
+            <option value="custap" {{#if (eq berry.berryType "custap")}}selected{{/if}}>{{localize "POKEBERRY.Custap"}} (T3)</option>
+            <option value="durin" {{#if (eq berry.berryType "durin")}}selected{{/if}}>{{localize "POKEBERRY.Durin"}} (T2)</option>
+            <option value="enigma" {{#if (eq berry.berryType "enigma")}}selected{{/if}}>{{localize "POKEBERRY.Enigma"}} (T2)</option>
+            <option value="figy" {{#if (eq berry.berryType "figy")}}selected{{/if}}>{{localize "POKEBERRY.Figy"}} (T2)</option>
+            <option value="ganlon" {{#if (eq berry.berryType "ganlon")}}selected{{/if}}>{{localize "POKEBERRY.Ganlon"}} (T2)</option>
+            <option value="grepa" {{#if (eq berry.berryType "grepa")}}selected{{/if}}>{{localize "POKEBERRY.Grepa"}} (T3)</option>
+            <option value="haban" {{#if (eq berry.berryType "haban")}}selected{{/if}}>{{localize "POKEBERRY.Haban"}} (T4)</option>
+            <option value="hondew" {{#if (eq berry.berryType "hondew")}}selected{{/if}}>{{localize "POKEBERRY.Hondew"}} (T3)</option>
+            <option value="iapapa" {{#if (eq berry.berryType "iapapa")}}selected{{/if}}>{{localize "POKEBERRY.Iapapa"}} (T2)</option>
+            <option value="jaboca" {{#if (eq berry.berryType "jaboca")}}selected{{/if}}>{{localize "POKEBERRY.Jaboca"}} (T2)</option>
+            <option value="kasib" {{#if (eq berry.berryType "kasib")}}selected{{/if}}>{{localize "POKEBERRY.Kasib"}} (T4)</option>
+            <option value="kebia" {{#if (eq berry.berryType "kebia")}}selected{{/if}}>{{localize "POKEBERRY.Kebia"}} (T4)</option>
+            <option value="kee" {{#if (eq berry.berryType "kee")}}selected{{/if}}>{{localize "POKEBERRY.Kee"}} (T5)</option>
+            <option value="kelpsy" {{#if (eq berry.berryType "kelpsy")}}selected{{/if}}>{{localize "POKEBERRY.Kelpsy"}} (T3)</option>
+            <option value="lansat" {{#if (eq berry.berryType "lansat")}}selected{{/if}}>{{localize "POKEBERRY.Lansat"}} (T5)</option>
+            <option value="leppa" {{#if (eq berry.berryType "leppa")}}selected{{/if}}>{{localize "POKEBERRY.Leppa"}} (T3)</option>
+            <option value="liechi" {{#if (eq berry.berryType "liechi")}}selected{{/if}}>{{localize "POKEBERRY.Liechi"}} (T2)</option>
+            <option value="lum" {{#if (eq berry.berryType "lum")}}selected{{/if}}>{{localize "POKEBERRY.Lum"}} (T2)</option>
+            <option value="mago" {{#if (eq berry.berryType "mago")}}selected{{/if}}>{{localize "POKEBERRY.Mago"}} (T2)</option>
+            <option value="magost" {{#if (eq berry.berryType "magost")}}selected{{/if}}>{{localize "POKEBERRY.Magost"}} (T2)</option>
+            <option value="maranga" {{#if (eq berry.berryType "maranga")}}selected{{/if}}>{{localize "POKEBERRY.Maranga"}} (T3)</option>
+            <option value="micle" {{#if (eq berry.berryType "micle")}}selected{{/if}}>{{localize "POKEBERRY.Micle"}} (T2)</option>
+            <option value="nanab" {{#if (eq berry.berryType "nanab")}}selected{{/if}}>{{localize "POKEBERRY.Nanab"}} (T1)</option>
+            <option value="nomel" {{#if (eq berry.berryType "nomel")}}selected{{/if}}>{{localize "POKEBERRY.Nomel"}} (T2)</option>
+            <option value="occa" {{#if (eq berry.berryType "occa")}}selected{{/if}}>{{localize "POKEBERRY.Occa"}} (T3)</option>
+            <option value="oran" {{#if (eq berry.berryType "oran")}}selected{{/if}}>{{localize "POKEBERRY.Oran"}} (T1)</option>
+            <option value="pamtre" {{#if (eq berry.berryType "pamtre")}}selected{{/if}}>{{localize "POKEBERRY.Pamtre"}} (T2)</option>
+            <option value="passho" {{#if (eq berry.berryType "passho")}}selected{{/if}}>{{localize "POKEBERRY.Passho"}} (T4)</option>
+            <option value="payapa" {{#if (eq berry.berryType "payapa")}}selected{{/if}}>{{localize "POKEBERRY.Payapa"}} (T4)</option>
+            <option value="pecha" {{#if (eq berry.berryType "pecha")}}selected{{/if}}>{{localize "POKEBERRY.Pecha"}} (T1)</option>
+            <option value="persim" {{#if (eq berry.berryType "persim")}}selected{{/if}}>{{localize "POKEBERRY.Persim"}} (T1)</option>
+            <option value="petaya" {{#if (eq berry.berryType "petaya")}}selected{{/if}}>{{localize "POKEBERRY.Petaya"}} (T2)</option>
+            <option value="pinap" {{#if (eq berry.berryType "pinap")}}selected{{/if}}>{{localize "POKEBERRY.Pinap"}} (T0)</option>
+            <option value="pomeg" {{#if (eq berry.berryType "pomeg")}}selected{{/if}}>{{localize "POKEBERRY.Pomeg"}} (T3)</option>
+            <option value="qualot" {{#if (eq berry.berryType "qualot")}}selected{{/if}}>{{localize "POKEBERRY.Qualot"}} (T3)</option>
+            <option value="rabuta" {{#if (eq berry.berryType "rabuta")}}selected{{/if}}>{{localize "POKEBERRY.Rabuta"}} (T2)</option>
+            <option value="rawst" {{#if (eq berry.berryType "rawst")}}selected{{/if}}>{{localize "POKEBERRY.Rawst"}} (T1)</option>
+            <option value="razz" {{#if (eq berry.berryType "razz")}}selected{{/if}}>{{localize "POKEBERRY.Razz"}} (T0)</option>
+            <option value="rindo" {{#if (eq berry.berryType "rindo")}}selected{{/if}}>{{localize "POKEBERRY.Rindo"}} (T4)</option>
+            <option value="roseli" {{#if (eq berry.berryType "roseli")}}selected{{/if}}>{{localize "POKEBERRY.Roseli"}} (T3)</option>
+            <option value="rowap" {{#if (eq berry.berryType "rowap")}}selected{{/if}}>{{localize "POKEBERRY.Rowap"}} (T2)</option>
+            <option value="salac" {{#if (eq berry.berryType "salac")}}selected{{/if}}>{{localize "POKEBERRY.Salac"}} (T2)</option>
+            <option value="shuca" {{#if (eq berry.berryType "shuca")}}selected{{/if}}>{{localize "POKEBERRY.Shuca"}} (T4)</option>
+            <option value="sitrus" {{#if (eq berry.berryType "sitrus")}}selected{{/if}}>{{localize "POKEBERRY.Sitrus"}} (T2)</option>
+            <option value="spelon" {{#if (eq berry.berryType "spelon")}}selected{{/if}}>{{localize "POKEBERRY.Spelon"}} (T2)</option>
+            <option value="starf" {{#if (eq berry.berryType "starf")}}selected{{/if}}>{{localize "POKEBERRY.Starf"}} (T2)</option>
+            <option value="tamato" {{#if (eq berry.berryType "tamato")}}selected{{/if}}>{{localize "POKEBERRY.Tamato"}} (T3)</option>
+            <option value="tanga" {{#if (eq berry.berryType "tanga")}}selected{{/if}}>{{localize "POKEBERRY.Tanga"}} (T4)</option>
+            <option value="wacan" {{#if (eq berry.berryType "wacan")}}selected{{/if}}>{{localize "POKEBERRY.Wacan"}} (T4)</option>
+            <option value="watmel" {{#if (eq berry.berryType "watmel")}}selected{{/if}}>{{localize "POKEBERRY.Watmel"}} (T2)</option>
+            <option value="wepear" {{#if (eq berry.berryType "wepear")}}selected{{/if}}>{{localize "POKEBERRY.Wepear"}} (T0)</option>
+            <option value="wiki" {{#if (eq berry.berryType "wiki")}}selected{{/if}}>{{localize "POKEBERRY.Wiki"}} (T2)</option>
+            <option value="yache" {{#if (eq berry.berryType "yache")}}selected{{/if}}>{{localize "POKEBERRY.Yache"}} (T4)</option>
+          </optgroup>
+          <optgroup label="{{localize "POKEBERRY.GroupApricorns"}}">
+            <option value="apricornBlack" {{#if (eq berry.berryType "apricornBlack")}}selected{{/if}}>{{localize "POKEBERRY.ApricornBlack"}}</option>
+            <option value="apricornBlue" {{#if (eq berry.berryType "apricornBlue")}}selected{{/if}}>{{localize "POKEBERRY.ApricornBlue"}}</option>
+            <option value="apricornGreen" {{#if (eq berry.berryType "apricornGreen")}}selected{{/if}}>{{localize "POKEBERRY.ApricornGreen"}}</option>
+            <option value="apricornPink" {{#if (eq berry.berryType "apricornPink")}}selected{{/if}}>{{localize "POKEBERRY.ApricornPink"}}</option>
+            <option value="apricornRed" {{#if (eq berry.berryType "apricornRed")}}selected{{/if}}>{{localize "POKEBERRY.ApricornRed"}}</option>
+            <option value="apricornWhite" {{#if (eq berry.berryType "apricornWhite")}}selected{{/if}}>{{localize "POKEBERRY.ApricornWhite"}}</option>
+            <option value="apricornYellow" {{#if (eq berry.berryType "apricornYellow")}}selected{{/if}}>{{localize "POKEBERRY.ApricornYellow"}}</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "POKEBERRY.CurrentStage"}}</label>
+      <div class="form-fields">
+        <select name="flags.pokeberry.stage">
+          {{#if berry.isApricorn}}
+          <option value="planted" {{#if (eq berry.stage "planted")}}selected{{/if}}>{{localize "POKEBERRY.Planted"}}</option>
+          <option value="sprouted" {{#if (eq berry.stage "sprouted")}}selected{{/if}}>{{localize "POKEBERRY.Sprouted"}}</option>
+          <option value="growing" {{#if (eq berry.stage "growing")}}selected{{/if}}>{{localize "POKEBERRY.Growing"}}</option>
+          <option value="ready" {{#if (eq berry.stage "ready")}}selected{{/if}}>{{localize "POKEBERRY.Ready"}}</option>
+          {{else}}
+          <option value="planted" {{#if (eq berry.stage "planted")}}selected{{/if}}>{{localize "POKEBERRY.Planted"}}</option>
+          <option value="sprouted" {{#if (eq berry.stage "sprouted")}}selected{{/if}}>{{localize "POKEBERRY.Sprouted"}}</option>
+          <option value="taller" {{#if (eq berry.stage "taller")}}selected{{/if}}>{{localize "POKEBERRY.Taller"}}</option>
+          <option value="flowering" {{#if (eq berry.stage "flowering")}}selected{{/if}}>{{localize "POKEBERRY.Flowering"}}</option>
+          <option value="ready" {{#if (eq berry.stage "ready")}}selected{{/if}}>{{localize "POKEBERRY.Ready"}}</option>
+          {{/if}}
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "POKEBERRY.GrowthMulch"}}</label>
+      <div class="form-fields">
+        <input type="checkbox" name="flags.pokeberry.growthMulch" {{#if berry.growthMulch}}checked{{/if}}>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "POKEBERRY.SoilQuality"}}</label>
+      <div class="form-fields">
+        <select name="flags.pokeberry.soilQuality">
+          <option value="normal" {{#if (eq berry.soilQuality "normal")}}selected{{/if}}>{{localize "POKEBERRY.SoilNormal"}}</option>
+          <option value="good" {{#if (eq berry.soilQuality "good")}}selected{{/if}}>{{localize "POKEBERRY.SoilGood"}}</option>
+          <option value="great" {{#if (eq berry.soilQuality "great")}}selected{{/if}}>{{localize "POKEBERRY.SoilGreat"}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "POKEBERRY.ElapsedTime"}}</label>
+      <div class="form-fields">
+        <input type="number" name="flags.pokeberry.elapsedHours" value="{{berry.elapsedHours}}" min="0" max="999" style="width:50px;"> :
+        <input type="number" name="flags.pokeberry.elapsedMinutes" value="{{berry.elapsedMinutes}}" min="0" max="59" style="width:50px;"> :
+        <input type="number" name="flags.pokeberry.elapsedSeconds" value="{{berry.elapsedSeconds}}" min="0" max="59" style="width:50px;">
+      </div>
+      <p class="hint">{{localize "POKEBERRY.ElapsedTimeHint"}}</p>
+    </div>
+    {{/if}}
+</div>
