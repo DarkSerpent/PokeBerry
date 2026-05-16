@@ -2,6 +2,11 @@
 
 A module for the Pokémon Tabletop Reunited 1e system which allows you to have fully automated berry plants and apricorn trees that grow on a schedule using Simple Calendar Reborn or SmallTime.
 
+## Import Link
+```
+https://raw.githubusercontent.com/DarkSerpent/PokeBerry/refs/heads/main/module.json
+```
+
 ## Features
 
 - **65 Berry Varieties** across tiers T0–T5, each with unique growth times and item UUIDs tied to the PTU compendium
