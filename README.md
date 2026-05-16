@@ -14,8 +14,8 @@ A module for the Pokémon Tabletop Reunited 1e system which allows you to have f
 - **GM Tile Config Tab** — change berry type, growth stage, mulch, soil quality, or elapsed time on existing plants
 - **Orphaned Tile Cleanup** — tool to remove broken foreground/background tile pairs
 
-<video src="BerryModule1.mp4" controls></video>
-<video src="BerryModule2.mp4" controls></video>
+![](examples/BerryModule1.mp4)
+![](examples/BerryModule2.mp4)
 
 ## How to Use
 
