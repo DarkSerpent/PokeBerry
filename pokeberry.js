@@ -186,8 +186,8 @@ async function handleBerryPick(tokDoc, tileDoc) {
     ChatMessage.create({ content: game.i18n.format("POKEBERRY.NotReady", { time: ftr(rem) }), whisper: rec.map(id => game.users.get(id)).filter(u => u), speaker: ChatMessage.getSpeaker({ token: tokDoc, actor: ac }) });
     return;
   }
-  let by; if (ap) by = Math.max(0, Math.floor(Math.random() * 2)); else if (bd.tier <= 0) by = 1; else if (bd.tier <= 2) by = Math.max(0, Math.floor(Math.random() * 3) + 1 - bd.tier); else by = Math.max(0, Math.floor(Math.random() * 4) - 2);
-  const sb = ap ? 0 : (f.soilQuality === "good" ? 1 : f.soilQuality === "great" ? 2 : 0); const yc = by + sb;
+  let by; if (ap) by = Math.floor(Math.random() * 2) - 1; else if (bd.tier <= 0) by = 1; else if (bd.tier <= 2) by = Math.floor(Math.random() * 3) + 1 - bd.tier; else by = Math.floor(Math.random() * 4) - 2;
+  const sb = ap ? (f.soilQuality === "good" ? 1 : f.soilQuality === "great" ? 2 : 0) : 0; const yc = Math.max(0, by + sb);
   const rs = ap ? "growing" : "taller"; const bn = game.i18n.localize("POKEBERRY." + (bt.charAt(0).toUpperCase() + bt.slice(1)));
   if (yc <= 0) {
     ChatMessage.create({ content: game.i18n.localize(ap ? "POKEBERRY.PickedNoneApricorn" : "POKEBERRY.PickedNone"), speaker: ChatMessage.getSpeaker({ token: tokDoc, actor: ac }) });
