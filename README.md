@@ -4,7 +4,7 @@ A module for the Pokémon Tabletop Reunited 1e system which allows you to have f
 
 ## Import Link
 ```
-https://raw.githubusercontent.com/DarkSerpent/PokeBerry/refs/heads/main/module.json
+https://github.com/DarkSerpent/PokeBerry/releases/latest/download/module.json
 ```
 
 ## Features
