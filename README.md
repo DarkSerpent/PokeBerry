@@ -43,6 +43,7 @@ https://raw.githubusercontent.com/DarkSerpent/PokeBerry/refs/heads/main/module.j
 3. Adjust berry type, stage, mulch, soil quality, or elapsed time
 
 ## Supported Berries
+> Note that **Growth Time** is *per stage*. To calculate how long it'll take to progress to a specific stage, multiply the number by the amount of stages that come before (e.g. Taller to Ready is ×2).
 
 | Tier | Growth Time | Yield Range | Berries |
 |------|-------------|-------------|---------|
