@@ -66,6 +66,8 @@ https://raw.githubusercontent.com/DarkSerpent/PokeBerry/refs/heads/main/module.j
 | [Simple Calendar Reborn](https://foundryvtt.com/packages/foundryvtt-simple-calendar-reborn) | One of |
 | [SmallTime](https://foundryvtt.com/packages/smalltime) | One of |
 
+> While you only need one of the modules between **Simple Calendar Reborn** or **SmallTime** for **PokéBerry** to work, both modules have integration with each other, so you can install both!
+
 ## Limitations
 
 - Does not currently support Herbs
