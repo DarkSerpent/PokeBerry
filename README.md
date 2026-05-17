@@ -2,6 +2,11 @@
 
 A module for the Pokémon Tabletop Reunited 1e system which allows you to have fully automated berry plants and apricorn trees that grow on a schedule using Simple Calendar Reborn or SmallTime.
 
+## Import Link
+```
+https://raw.githubusercontent.com/DarkSerpent/PokeBerry/refs/heads/main/module.json
+```
+
 ## Features
 
 - **65 Berry Varieties** across tiers T0–T5, each with unique growth times and item UUIDs tied to the PTU compendium
@@ -42,13 +47,13 @@ A module for the Pokémon Tabletop Reunited 1e system which allows you to have f
 | Tier | Growth Time | Yield Range | Berries |
 |------|-------------|-------------|---------|
 | T0 | 3 hours | 1 | Bluk, Pinap, Razz, Wepear |
-| T1 | 6 hours | 0–2 | Aspear, Cheri, Chesto, Nanab, Oran, Pecha, Persim, Rawst |
-| T2 | 8 hours | 0–2 | Aguav, Apicot, Belue, Cornn, Durin, Enigma, Figy, Ganlon, Iapapa, Jaboca, Liechi, Lum, Mago, Magost, Micle, Nomel, Pamtre, Petaya, Rabuta, Rowap, Salac, Sitrus, Spelon, Starf, Watmel, Wiki |
-| T3 | 12 hours | 0–2 | Custap, Grepa, Hondew, Kelpsy, Leppa, Maranga, Occa, Pomeg, Qualot, Roseli, Tamato |
-| T4 | 15 hours | 0–2 | Babiri, Charti, Chilan, Chople, Coba, Colbur, Haban, Kasib, Kebia, Passho, Payapa, Rindo, Shuca, Tanga, Wacan, Yache |
-| T5 | 18 hours | 0–2 | Kee, Lansat |
+| T1 | 6 hours | 1d3-1 | Aspear, Cheri, Chesto, Nanab, Oran, Pecha, Persim, Rawst |
+| T2 | 8 hours | 1d3-2 | Aguav, Apicot, Belue, Cornn, Durin, Enigma, Figy, Ganlon, Iapapa, Jaboca, Liechi, Lum, Mago, Magost, Micle, Nomel, Pamtre, Petaya, Rabuta, Rowap, Salac, Sitrus, Spelon, Starf, Watmel, Wiki |
+| T3 | 12 hours | 1d4-3 | Custap, Grepa, Hondew, Kelpsy, Leppa, Maranga, Occa, Pomeg, Qualot, Roseli, Tamato |
+| T4 | 15 hours | 1d4-3 | Babiri, Charti, Chilan, Chople, Coba, Colbur, Haban, Kasib, Kebia, Passho, Payapa, Rindo, Shuca, Tanga, Wacan, Yache |
+| T5 | 18 hours | 1d4-3 | Kee, Lansat |
 
-> **Apricorns** have a fixed 24-hour growth cycle with stages: Planted → Sprouted → Growing → Ready. Yield is 0–1 per harvest.
+> **Apricorns** have a fixed 24-hour growth cycle with stages: Planted → Sprouted → Growing → Ready. Yield is 1d2-2 per harvest.
 
 ## Dependencies
 
