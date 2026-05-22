@@ -117,12 +117,15 @@ async function createBerryTile(scene, x, y) {
     [`flags.${MODULE_ID}.stage`]: "planted", [`flags.${MODULE_ID}.growthMulch`]: growthMulch,
     [`flags.${MODULE_ID}.soilQuality`]: soilQuality || "normal", [`flags.${MODULE_ID}.plantedTimestamp`]: now,
   }]))[0];
-  const fg = (await scene.createEmbeddedDocuments("Tile", [{
-    width: tw, height: th, texture: { src: fgi("planted", berryType) },
-    x, y, sort: sv + 10000, overhead: true, locked: true, elevation: 50,
-    [`flags.${MODULE_ID}.isForeground`]: true, [`flags.${MODULE_ID}.parentBaseId`]: base.id,
-  }]))[0];
-  if (fg) base.update({ [`flags.${MODULE_ID}.fgTileId`]: fg.id });
+  const noFG = game.settings.get(MODULE_ID, "noForegroundTiles");
+  if (!noFG) {
+    const fg = (await scene.createEmbeddedDocuments("Tile", [{
+      width: tw, height: th, texture: { src: fgi("planted", berryType) },
+      x, y, sort: sv + 10000, overhead: true, locked: true, elevation: 50,
+      [`flags.${MODULE_ID}.isForeground`]: true, [`flags.${MODULE_ID}.parentBaseId`]: base.id,
+    }]))[0];
+    if (fg) base.update({ [`flags.${MODULE_ID}.fgTileId`]: fg.id });
+  }
 }
 
 function syncFG(tile, optStage, optBt) {
@@ -173,7 +176,20 @@ async function processAll(ct) { if (!game.user.isGM || !canvas?.scene) return; f
 
 function ftr(s) { const h = Math.floor(s/3600); const m = Math.floor((s%3600)/60); if(!s)return"0m"; const p=[]; if(h)p.push(`${h}h`); if(m)p.push(`${m}m`); if(!p.length)p.push("0m"); return p.join(" "); }
 
-async function handleBerryPick(tokDoc, tileDoc) {
+async function playSoundForUser(src, volume, userId) {
+  if (!userId) return;
+  if (game.user.id === userId) {
+    AudioHelper.play({ src, volume, autoplay: true, loop: false }, false);
+    return;
+  }
+  const soc = getSocketLib();
+  if (soc && soc.executeForUsers) {
+    try { await soc.executeForUsers("playSound", [userId], src, volume); }
+    catch (e) { console.error("PokeBerry | Failed to play sound for user:", e); }
+  }
+}
+
+async function handleBerryPick(tokDoc, tileDoc, callerUserId, callerSelfOnly, callerVolume) {
   const f = tileDoc.flags?.[MODULE_ID]; if (!f?.enabled) return;
   const stage = f.stage || "planted"; const bt = f.berryType || "oran"; const ap = isAp(bt); const bd = BERRY_DATA[bt];
   if (!bd && !ap) return; const ac = tokDoc.actor; if (!ac) return;
@@ -189,9 +205,15 @@ async function handleBerryPick(tokDoc, tileDoc) {
   let by; if (ap) by = Math.floor(Math.random() * 2) - 1; else if (bd.tier <= 0) by = 1; else if (bd.tier <= 2) by = Math.floor(Math.random() * 3) + 1 - bd.tier; else by = Math.floor(Math.random() * 4) - 2;
   const sb = ap ? (f.soilQuality === "good" ? 1 : f.soilQuality === "great" ? 2 : 0) : 0; const yc = Math.max(0, by + sb);
   const rs = ap ? "growing" : "taller"; const bn = game.i18n.localize("POKEBERRY." + (bt.charAt(0).toUpperCase() + bt.slice(1)));
+  const selfOnlySound = callerSelfOnly !== undefined ? callerSelfOnly : game.settings.get(MODULE_ID, "selfOnlySound");
+  const soundVolume = callerVolume !== undefined ? callerVolume : game.settings.get(MODULE_ID, "soundVolume");
   if (yc <= 0) {
     ChatMessage.create({ content: game.i18n.localize(ap ? "POKEBERRY.PickedNoneApricorn" : "POKEBERRY.PickedNone"), speaker: ChatMessage.getSpeaker({ token: tokDoc, actor: ac }) });
-    AudioHelper.play({ src: "modules/pokeberry/sounds/berry_fail.mp3", volume: 0.7, autoplay: true, loop: false }, true);
+    if (selfOnlySound && callerUserId) {
+      playSoundForUser("modules/pokeberry/sounds/berry_fail.mp3", soundVolume, callerUserId);
+    } else {
+      AudioHelper.play({ src: "modules/pokeberry/sounds/berry_fail.mp3", volume: soundVolume, autoplay: true, loop: false }, true);
+    }
     await tileDoc.update({ [`flags.${MODULE_ID}.stage`]: rs, [`flags.${MODULE_ID}.plantedTimestamp`]: ct, "texture.src": bi(rs, bt) });
     syncFG(tileDoc); return;
   }
@@ -201,7 +223,11 @@ async function handleBerryPick(tokDoc, tileDoc) {
   if (ex) { const cq = Number(ex.system?.quantity ?? 0); if ("quantity" in (ex.system || {})) await ex.update({ "system.quantity": cq + yc }); else await ex.update({ "system.stack": (Number(ex.system?.stack ?? 0)) + yc }); }
   else { const idat = it.toObject(); if (idat.system) { if (foundry.utils.hasProperty(idat, "system.quantity")) idat.system.quantity = yc; if (foundry.utils.hasProperty(idat, "system.stack")) idat.system.stack = yc; } await ac.createEmbeddedDocuments("Item", [idat]); }
   ChatMessage.create({ content: game.i18n.format("POKEBERRY.Picked", { actor: ac.name, berry: bn, count: yc }), speaker: ChatMessage.getSpeaker({ token: tokDoc, actor: ac }) });
-  AudioHelper.play({ src: "modules/pokeberry/sounds/berry_get.mp3", volume: 0.7, autoplay: true, loop: false }, true);
+  if (selfOnlySound && callerUserId) {
+    playSoundForUser("modules/pokeberry/sounds/berry_get.mp3", soundVolume, callerUserId);
+  } else {
+    AudioHelper.play({ src: "modules/pokeberry/sounds/berry_get.mp3", volume: soundVolume, autoplay: true, loop: false }, true);
+  }
   await tileDoc.update({ [`flags.${MODULE_ID}.stage`]: rs, [`flags.${MODULE_ID}.plantedTimestamp`]: ct, "texture.src": bi(rs, bt) });
   syncFG(tileDoc);
 }
@@ -212,7 +238,7 @@ function getSocketLib() {
 }
 
 async function requestBerryPick(tokDoc, tileDoc) {
-  if (game.user.isGM) return handleBerryPick(tokDoc, tileDoc);
+  if (game.user.isGM) return handleBerryPick(tokDoc, tileDoc, game.user.id);
   if (!game.users.activeGM) {
     ui.notifications.error(game.i18n.localize("POKEBERRY.NoGM"));
     return;
@@ -222,8 +248,10 @@ async function requestBerryPick(tokDoc, tileDoc) {
     ui.notifications.error(game.i18n.localize("POKEBERRY.NoGM"));
     return;
   }
+  const callerSelfOnly = game.settings.get(MODULE_ID, "selfOnlySound");
+  const callerVolume = game.settings.get(MODULE_ID, "soundVolume");
   try {
-    await soc.executeAsGM("berryPick", tokDoc.id, tileDoc.id);
+    await soc.executeAsGM("berryPick", tokDoc.id, tileDoc.id, game.user.id, callerSelfOnly, callerVolume);
   } catch (e) {
     ui.notifications.error(game.i18n.localize("POKEBERRY.NoGM"));
   }
@@ -231,7 +259,36 @@ async function requestBerryPick(tokDoc, tileDoc) {
 
 function onTimeChange(data) { if (!canvas?.scene) return; if (data?.diff !== undefined && data.diff <= 0) return; processAll(ts()); }
 
-function inPickZone(tok, to) { const td = to.document; const gs = canvas.grid.size; const pt = td.y + td.height - gs; const cx = tok.object.center.x; const cy = tok.object.center.y; return cx >= td.x && cx <= td.x + td.width && cy >= pt && cy <= td.y + td.height; }
+function isFacing(tokObj, tx, ty) {
+  if (!tokObj) return false;
+  const cx = tokObj.center.x;
+  const cy = tokObj.center.y;
+  const r = tokObj.document.rotation ?? 0;
+  const angle = Math.atan2(ty - cy, tx - cx) * 180 / Math.PI - 90;
+  const norm = a => a < 0 ? a + 360 : a >= 360 ? a - 360 : a;
+  return Math.floor(norm(angle + 22.5) / 45) === Math.floor(norm(r + 22.5) / 45);
+}
+
+function inPickZone(tok, to) {
+  const td = to.document;
+  const gs = canvas.grid.size;
+  const pt = td.y + td.height - gs;
+  const cx = tok.object ? tok.object.center.x : tok.x;
+  const cy = tok.object ? tok.object.center.y : tok.y;
+  const onBottom = cx >= td.x && cx <= td.x + td.width && cy >= pt && cy <= td.y + td.height;
+  const paActive = game.modules.get("pokemon-assets")?.active;
+  let integration = false;
+  try { integration = game.settings.get(MODULE_ID, "enableSpriteIntegration"); } catch(e) {}
+  const useIntegration = paActive && integration && !tok.lockRotation;
+  if (!useIntegration) return onBottom;
+  if (onBottom) return false;
+  const bx = td.x + td.width / 2;
+  const by = td.y + td.height - gs / 2;
+  const distX = Math.abs(cx - bx);
+  const distY = Math.abs(cy - by);
+  if (distX > td.width / 2 + gs || distY > gs * 2.5) return false;
+  return isFacing(tok.object, bx, by);
+}
 
 function onKeyDown(event) {
   if (event.key !== "Enter") return;
@@ -257,19 +314,25 @@ Hooks.on("init", () => {
   const mod = game.modules.get(MODULE_ID);
   if (typeof socketlib !== "undefined" && socketlib.registerModule) {
     mod.soc = socketlib.registerModule(MODULE_ID);
-    mod.soc.register("berryPick", async (tokId, tileId) => {
+  mod.soc.register("berryPick", async (tokId, tileId, callerUserId, callerSelfOnly, callerVolume) => {
       const tokDoc = canvas?.scene?.tokens?.get(tokId);
       const tileDoc = canvas?.scene?.tiles?.get(tileId);
-      if (tokDoc && tileDoc) return handleBerryPick(tokDoc, tileDoc);
+      if (tokDoc && tileDoc) return handleBerryPick(tokDoc, tileDoc, callerUserId, callerSelfOnly, callerVolume);
+    });
+    mod.soc.register("playSound", async (src, volume) => {
+      AudioHelper.play({ src, volume, autoplay: true, loop: false }, false);
     });
   } else {
     Hooks.once("socketlib.ready", () => {
       const soc = socketlib.registerModule(MODULE_ID);
       mod.soc = soc;
-      soc.register("berryPick", async (tokId, tileId) => {
+      soc.register("berryPick", async (tokId, tileId, callerUserId, callerSelfOnly, callerVolume) => {
         const tokDoc = canvas?.scene?.tokens?.get(tokId);
         const tileDoc = canvas?.scene?.tiles?.get(tileId);
-        if (tokDoc && tileDoc) return handleBerryPick(tokDoc, tileDoc);
+        if (tokDoc && tileDoc) return handleBerryPick(tokDoc, tileDoc, callerUserId, callerSelfOnly, callerVolume);
+      });
+      soc.register("playSound", async (src, volume) => {
+        AudioHelper.play({ src, volume, autoplay: true, loop: false }, false);
       });
     });
   }
@@ -278,6 +341,50 @@ Hooks.on("init", () => {
   if (!et.some(t => t.id === "berry")) { tc.PARTS = { ...tc.PARTS, berry: { template: "modules/pokeberry/templates/berry-settings.hbs" } }; tc.TABS = foundry.utils.mergeObject(tc.TABS || {}, { sheet: { tabs: [...et, { id: "berry", icon: "fas fa-seedling", label: "POKEBERRY.Tab" }] } }); }
   foundry.applications.handlebars.loadTemplates(["modules/pokeberry/templates/berry-settings.hbs", "modules/pokeberry/templates/berry-dialog.hbs"]);
   libWrapper.register(MODULE_ID, "foundry.applications.sheets.TileConfig.prototype._preparePartContext", _ppc, "WRAPPER");
+
+  game.settings.register(MODULE_ID, "disableWallCollisions", {
+    name: "POKEBERRY.DisableWallCollisionsName",
+    hint: "POKEBERRY.DisableWallCollisionsHint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+  });
+  game.settings.register(MODULE_ID, "noForegroundTiles", {
+    name: "POKEBERRY.NoForegroundTilesName",
+    hint: "POKEBERRY.NoForegroundTilesHint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+  });
+  game.settings.register(MODULE_ID, "selfOnlySound", {
+    name: "POKEBERRY.SelfOnlySoundName",
+    hint: "POKEBERRY.SelfOnlySoundHint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+  game.settings.register(MODULE_ID, "soundVolume", {
+    name: "POKEBERRY.SoundVolumeName",
+    hint: "POKEBERRY.SoundVolumeHint",
+    scope: "client",
+    config: true,
+    type: Number,
+    range: { min: 0, max: 1, step: 0.1 },
+    default: 0.7,
+  });
+  if (game.modules.get("pokemon-assets")?.active) {
+    game.settings.register(MODULE_ID, "enableSpriteIntegration", {
+      name: "POKEBERRY.EnableSpriteIntegrationName",
+      hint: "POKEBERRY.EnableSpriteIntegrationHint",
+      scope: "world",
+      config: true,
+      type: Boolean,
+      default: false,
+    });
+  }
 });
 
 
@@ -316,6 +423,7 @@ Hooks.on("canvasInit", () => {
     if (origIE) origIE.call(this, { deleted }); const pf = `${this.id}_pbw`;
     if (deleted) { [...canvas.edges.keys()].filter(k => k.startsWith(pf)).forEach(k => canvas.edges.delete(k)); return; }
     if (!this.document?.flags?.[MODULE_ID]?.enabled) return;
+    if (game.settings.get(MODULE_ID, "disableWallCollisions")) return;
     [...canvas.edges.keys()].filter(k => k.startsWith(pf)).forEach(k => canvas.edges.delete(k));
     const gs = canvas.grid.size; const x = this.document.x; const sy = this.document.y + this.document.height - gs;
     canvas.edges.set(pf, new foundry.canvas.geometry.edges.Edge({ x, y: sy }, { x: x + this.document.width, y: sy }, { id: pf, object: this, type: "wall", direction: CONST.WALL_DIRECTIONS.BOTH, move: CONST.WALL_MOVEMENT_TYPES.NORMAL }));

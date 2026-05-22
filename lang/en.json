@@ -101,5 +101,18 @@
   "POKEBERRY.PickedNoneApricorn": "Oh no! Some Pokémon picked the apricorns from the tree before you could get to them!",
   "POKEBERRY.NoGM": "A Game Master must be connected to harvest berries. Please wait for a GM to join.",
   "POKEBERRY.ElapsedTime": "Elapsed Stage Time",
-  "POKEBERRY.ElapsedTimeHint": "Time elapsed in current stage (HH:MM:SS). Changing the stage resets this to 0."
+  "POKEBERRY.ElapsedTimeHint": "Time elapsed in current stage (HH:MM:SS). Changing the stage resets this to 0.",
+  "POKEBERRY.DisableWallCollisionsName": "Disable Wall Collisions",
+  "POKEBERRY.DisableWallCollisionsHint": "Disables wall collision physics for berry plants and apricorn trees. This allows players to walk through berry plants, but note that disabling collision will cause plants to render incorrectly over tokens when a player moves upward into them, as the foreground tile will no longer separate them. Only affects new plants; existing plants are unchanged.",
+  "POKEBERRY.SettingsName": "Audio Settings",
+  "POKEBERRY.SettingsLabel": "Audio Settings",
+  "POKEBERRY.SettingsHint": "Configure sound and audio settings for PokeBerry.",
+  "POKEBERRY.SelfOnlySoundName": "Self-Only Sounds",
+  "POKEBERRY.SelfOnlySoundHint": "When enabled, berry harvest sounds only play for the user harvesting the berry instead of all users.",
+  "POKEBERRY.SoundVolumeName": "Sound Effect Volume",
+  "POKEBERRY.SoundVolumeHint": "Adjust the volume of berry harvest sound effects (0.0 = silent, 1.0 = full volume).",
+  "POKEBERRY.NoForegroundTilesName": "Disable Foreground Tiles",
+  "POKEBERRY.NoForegroundTilesHint": "When enabled, newly placed berry plants and apricorn trees will not create the overhead foreground tile layer (*_FG.png). Only affects new plants; existing plants are unchanged.",
+  "POKEBERRY.EnableSpriteIntegrationName": "Integrate Directional Sprites",
+  "POKEBERRY.EnableSpriteIntegrationHint": "Pokémon Assets: When enabled, tokens can harvest berry plants from adjacent tiles as long as their artwork rotation is facing the plant. Tokens with Lock Artwork Rotation enabled will still need to be directly on the plant to harvest."
 }

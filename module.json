@@ -2,7 +2,7 @@
   "id": "pokeberry",
   "title": "PokeBerry",
   "description": "A module for the Pokémon Tabletop Reunited 1e system which allows you to have fully automated berry plants and apricorn trees that grow on a schedule using Simple Calendar Reborn or SmallTime.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "authors": [
     {
       "name": "Amarulence",
