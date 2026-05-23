@@ -203,7 +203,7 @@ async function handleBerryPick(tokDoc, tileDoc, callerUserId, callerSelfOnly, ca
     return;
   }
   let by; if (ap) by = Math.floor(Math.random() * 2) - 1; else if (bd.tier <= 0) by = 1; else if (bd.tier <= 2) by = Math.floor(Math.random() * 3) + 1 - bd.tier; else by = Math.floor(Math.random() * 4) - 2;
-  const sb = ap ? (f.soilQuality === "good" ? 1 : f.soilQuality === "great" ? 2 : 0) : 0; const yc = Math.max(0, by + sb);
+  const sb = f.soilQuality === "good" ? 1 : f.soilQuality === "great" ? 2 : 0; const yc = Math.max(0, by + sb);
   const rs = ap ? "growing" : "taller"; const bn = game.i18n.localize("POKEBERRY." + (bt.charAt(0).toUpperCase() + bt.slice(1)));
   const selfOnlySound = callerSelfOnly !== undefined ? callerSelfOnly : game.settings.get(MODULE_ID, "selfOnlySound");
   const soundVolume = callerVolume !== undefined ? callerVolume : game.settings.get(MODULE_ID, "soundVolume");
